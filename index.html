@@ -62,38 +62,46 @@
     <button id="no">Yes 😜</button>
   </div>
 
- <script>
+<script>
   const noBtn = document.getElementById("no");
+
+  noBtn.style.position = "absolute";
 
   document.addEventListener("mousemove", (e) => {
     const rect = noBtn.getBoundingClientRect();
 
-    const btnX = rect.left + rect.width / 2;
-    const btnY = rect.top + rect.height / 2;
+    const btnCenterX = rect.left + rect.width / 2;
+    const btnCenterY = rect.top + rect.height / 2;
 
-    const dx = btnX - e.clientX;
-    const dy = btnY - e.clientY;
+    const dx = btnCenterX - e.clientX;
+    const dy = btnCenterY - e.clientY;
 
     const distance = Math.sqrt(dx * dx + dy * dy);
 
-    if (distance < 80) { // ~2 inches
-      let moveX = (dx / distance) * 80;
-      let moveY = (dy / distance) * 80;
+    if (distance < 100) { // cursor close range (~2 inches)
+      const moveDistance = 60;
 
-      let newX = rect.left + moveX;
-      let newY = rect.top + moveY;
+      let moveX = (dx / distance) * moveDistance;
+      let moveY = (dy / distance) * moveDistance;
 
-      const maxX = window.innerWidth - rect.width;
-      const maxY = window.innerHeight - rect.height;
+      let newLeft = rect.left + moveX;
+      let newTop = rect.top + moveY;
 
-      newX = Math.max(0, Math.min(maxX, newX));
-      newY = Math.max(0, Math.min(maxY, newY));
+      // keep inside screen
+      const minX = 10;
+      const minY = 10;
+      const maxX = window.innerWidth - rect.width - 10;
+      const maxY = window.innerHeight - rect.height - 10;
 
-      noBtn.style.left = newX + "px";
-      noBtn.style.top = newY + "px";
+      newLeft = Math.min(Math.max(minX, newLeft), maxX);
+      newTop = Math.min(Math.max(minY, newTop), maxY);
+
+      noBtn.style.left = newLeft + "px";
+      noBtn.style.top = newTop + "px";
     }
   });
 </script>
+
 
 
 
