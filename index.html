@@ -67,6 +67,9 @@
 
   noBtn.style.position = "absolute";
 
+  // Keep a visible padding from screen edges
+  const EDGE_PADDING = 40;
+
   document.addEventListener("mousemove", (e) => {
     const rect = noBtn.getBoundingClientRect();
 
@@ -74,27 +77,12 @@
     const btnCenterY = rect.top + rect.height / 2;
 
     const dx = btnCenterX - e.clientX;
-    const dy = btnCenterY - e.clientY;
+    const dy =;    const dy = btnCenterY - e.clientY;
+      const maxY = window.innerHeight - rect.height - EDGE_PADDING;
 
-    const distance = Math.sqrt(dx * dx + dy * dy);
-
-    if (distance < 100) { // cursor close range (~2 inches)
-      const moveDistance = 10;
-
-      let moveX = (dx / distance) * moveDistance;
-      let moveY = (dy / distance) * moveDistance;
-
-      let newLeft = rect.left + moveX;
-      let newTop = rect.top + moveY;
-
-      // keep inside screen
-      const minX = 10;
-      const minY = 10;
-      const maxX = window.innerWidth - rect.width - 10;
-      const maxY = window.innerHeight - rect.height - 10;
-
-      newLeft = Math.min(Math.max(minX, newLeft), maxX);
-      newTop = Math.min(Math.max(minY, newTop), maxY);
+      // Clamp position within safe visible area
+      newLeft = Math.max(minX, Math.min(newLeft, maxX));
+      newTop = Math.max(minY, Math.min(newTop, maxY));
 
       noBtn.style.left = newLeft + "px";
       noBtn.style.top = newTop + "px";
@@ -102,6 +90,7 @@
   });
 </script>
 
+   
 
 
 
