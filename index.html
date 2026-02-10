@@ -63,27 +63,32 @@
   </div>
 
   <script>
-    const noBtn = document.getElementById("no");
+  const noBtn = document.getElementById("no");
 
-    noBtn.addEventListener("mouseover", () => {
-      const maxX = window.innerWidth - noBtn.offsetWidth;
-      const maxY = window.innerHeight - noBtn.offsetHeight;
+  document.addEventListener("mousemove", (e) => {
+    const rect = noBtn.getBoundingClientRect();
 
-      const x = Math.random() * maxX;
-      const y = Math.random() * maxY;
+    const distance = Math.hypot(
+      e.clientX - (rect.left + rect.width / 2),
+      e.clientY - (rect.top + rect.height / 2)
+    );
 
-      noBtn.style.left = x + "px";
-      noBtn.style.top = y + "px";
-    });
+    if (distance < 80) {  // ~2 inches
+      let newX = rect.left + (Math.random() * 160 - 80);
+      let newY = rect.top + (Math.random() * 160 - 80);
 
-    function yesClicked() {
-      document.body.innerHTML = `
-        <h1>Yaaay!!! 😍💍</h1>
-        <h1>I Love You ❤️</h1>
-        <h2>Forever & Always 🥰</h2>
-      `;
+      const maxX = window.innerWidth - rect.width;
+      const maxY = window.innerHeight - rect.height;
+
+      newX = Math.max(0, Math.min(maxX, newX));
+      newY = Math.max(0, Math.min(maxY, newY));
+
+      noBtn.style.left = newX + "px";
+      noBtn.style.top = newY + "px";
     }
-  </script>
+  });
+</script>
+
 
 </body>
 </html>
