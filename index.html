@@ -62,20 +62,26 @@
     <button id="no">Yes 😜</button>
   </div>
 
-  <script>
+ <script>
   const noBtn = document.getElementById("no");
 
   document.addEventListener("mousemove", (e) => {
     const rect = noBtn.getBoundingClientRect();
 
-    const distance = Math.hypot(
-      e.clientX - (rect.left + rect.width / 2),
-      e.clientY - (rect.top + rect.height / 2)
-    );
+    const btnX = rect.left + rect.width / 2;
+    const btnY = rect.top + rect.height / 2;
 
-    if (distance < 80) {  // ~2 inches
-      let newX = rect.left + (Math.random() * 160 - 80);
-      let newY = rect.top + (Math.random() * 160 - 80);
+    const dx = btnX - e.clientX;
+    const dy = btnY - e.clientY;
+
+    const distance = Math.sqrt(dx * dx + dy * dy);
+
+    if (distance < 80) { // ~2 inches
+      let moveX = (dx / distance) * 80;
+      let moveY = (dy / distance) * 80;
+
+      let newX = rect.left + moveX;
+      let newY = rect.top + moveY;
 
       const maxX = window.innerWidth - rect.width;
       const maxY = window.innerHeight - rect.height;
@@ -88,6 +94,7 @@
     }
   });
 </script>
+
 
 
 </body>
